@@ -1,0 +1,19 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.wrapper {
+  flex-direction: row;
+  display: flex;
+  background-color: lightcyan;
+}
+
+.tile {
+  height: 100px;
+  width: 100px;
+  border: 1px solid black;
+  text-align: center;
+  background-color: lightslategray;
+}
