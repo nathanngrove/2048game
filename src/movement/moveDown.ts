@@ -1,38 +1,32 @@
 import Tile from "../Tile";
 
-const findFirstEmptyTileDown = (tilesArray: Array<Array<Tile>>, column: number): number => {
-  let amountOfTiles = tilesArray.length - 1;
-  for(let i = amountOfTiles; i >= 0; i--) {
-    if(tilesArray[i][column].isOccupied()) continue;
-    return i;
+const shiftTileDown = (tilesArray: Array<Array<Tile>>, column: number, tile: number) => {
+  if(column > tilesArray.length - 1) return;
+
+  if(tile < 0) {
+    shiftTileDown(tilesArray, column + 1, 3);
+    return;
   }
-  return -1;
-}
 
-const shiftDown = (tilesArray: Array<Array<Tile>>, column: number) => {
-  if(column >= tilesArray.length) return;
+  if(tile === (tilesArray.length - 1) || !tilesArray[tile][column].isOccupied()) {
+    shiftTileDown(tilesArray, column, tile - 1);
+    return;
+  }
 
-  let amountOfTiles = tilesArray.length - 1;
-  
-  for(let i = amountOfTiles; i >= 0; i--) {
-    if(tilesArray[i][column].isOccupied()) {
-      let emptyTile = findFirstEmptyTileDown(tilesArray, column);
-      if(emptyTile === -1) {
-        console.log(`Column ${column} has no empty tiles.`);
-        continue;
-      }
-      if(emptyTile < i) {
-        console.log(`Column ${column} is already all the way to the right.`);
-        continue;
-      }
-      tilesArray[emptyTile][column].setText(tilesArray[i][column].getText());
-      tilesArray[i][column].setText("");
+  if(!tilesArray[tile + 1][column].isOccupied()) {
+    tilesArray[tile + 1][column].setText(tilesArray[tile][column].getText());
+    tilesArray[tile][column].setText("");
+    shiftTileDown(tilesArray, column, tile + 1);
+  } else {
+    if(tilesArray[tile + 1][column].getText() === tilesArray[tile][column].getText()) {
+      tilesArray[tile + 1][column].setText(`${Number(tilesArray[tile + 1][column].getText()) + Number(tilesArray[tile][column].getText())}`);
+      tilesArray[tile][column].setText("");
     }
   }
 
-  shiftDown(tilesArray, column + 1);
+  shiftTileDown(tilesArray, column, tile - 1);
 }
 
 export const shiftTilesDown = (tilesArray: Array<Array<Tile>>) => {
-  shiftDown(tilesArray, 0);
+  shiftTileDown(tilesArray, 0, 3);
 }

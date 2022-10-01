@@ -1,38 +1,32 @@
 import Tile from "../Tile";
 
-const findFirstEmptyTileRight = (tilesArray: Array<Array<Tile>>, row: number): number => {
-  let currentRow = tilesArray[row];
-  let amountOfTiles = currentRow.length - 1;
-  for(let i = amountOfTiles; i >= 0; i--) {
-    if(currentRow[i].isOccupied()) continue;
-    return i;
-  }
-  return -1;
-}
+const shiftTileRight = (tilesArray: Array<Array<Tile>>, row: number, tile: number) => {
+  if(row > tilesArray.length - 1) return;
 
-const shiftRight = (tilesArray: Array<Array<Tile>>, row: number) => {
-  if(row >= tilesArray.length) return;
-  let currentRow = tilesArray[row];
-  let amountOfTiles = currentRow.length - 1;
-  
-  for(let i = amountOfTiles; i >= 0; i--) {
-    if(currentRow[i].isOccupied()) {
-      let emptyTile = findFirstEmptyTileRight(tilesArray, row);
-      if(emptyTile === -1) {
-        console.log(`Row ${row} has no empty tiles.`);
-        continue;
-      }
-      if(emptyTile < i) {
-        console.log(`Row ${row} is already all the way to the right.`);
-        continue;
-      }
-      currentRow[emptyTile].setText(currentRow[i].getText());
-      currentRow[i].setText("");
+  if(tile < 0) {
+    shiftTileRight(tilesArray, row + 1, tilesArray.length - 1);
+    return;
+  }
+
+  if(tile === (tilesArray.length - 1) || !tilesArray[row][tile].isOccupied()) {
+    shiftTileRight(tilesArray, row, tile - 1);
+    return;
+  }
+
+  if(!tilesArray[row][tile + 1].isOccupied()) {
+    tilesArray[row][tile + 1].setText(tilesArray[row][tile].getText());
+    tilesArray[row][tile].setText("");
+    shiftTileRight(tilesArray, row, tile + 1);
+  } else {
+    if(tilesArray[row][tile + 1].getText() === tilesArray[row][tile].getText()) {
+      tilesArray[row][tile + 1].setText(`${Number(tilesArray[row][tile + 1].getText()) + Number(tilesArray[row][tile].getText())}`);
+      tilesArray[row][tile].setText("");
     }
   }
-  shiftRight(tilesArray, row + 1);
+
+  shiftTileRight(tilesArray, row, tile - 1);
 }
 
 export const shiftTilesRight = (tilesArray: Array<Array<Tile>>) => {
-  shiftRight(tilesArray, 0);
+  shiftTileRight(tilesArray, 0, 3);
 }

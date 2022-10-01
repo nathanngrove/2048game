@@ -16,4 +16,5 @@
   border: 1px solid black;
   text-align: center;
   background-color: lightslategray;
+  font-size: clamp(20px, 60px, 90px);
 }
