@@ -1,24 +1,15 @@
-import Tile from "../Tile"
+import { getEmptyTiles } from "./getEmptyTiles";
 
-const findAllEmptyTiles = (tilesArray: Array<Array<Tile>>): Array<Tile> => {
-  let emptyTiles: Array<Tile> = [];
+export const addTile = (board : HTMLElement) => {
+  const emptyTiles = getEmptyTiles(board);
 
-  tilesArray.forEach(row => {
-    row.forEach(tile => {
-      if(!tile.isOccupied())
-        emptyTiles.push(tile);
-    });
-  });
+  const randomPlacement = Math.floor(Math.random() * emptyTiles.length);
+  const randomNumber = Math.floor(Math.random() * 1.1);
 
-  return emptyTiles;
-}
+  const tile = document.createElement("div");
+  randomNumber === 0 ? tile.textContent = "2" : tile.textContent = "4";
+  tile.classList.add("tile");
+  randomNumber === 0 ? tile.classList.add("t2") : tile.classList.add("t4");
 
-export const addTile = (tilesArray: Array<Array<Tile>>) => {
-  let emptyTiles: Array<Tile> = findAllEmptyTiles(tilesArray);
-
-  if(emptyTiles.length === 0) return;
-  
-  let pendingTile: number = Math.floor(Math.random() * emptyTiles.length);
-  let number: number = Math.random() < 0.5 ? 4 : 2;
-  emptyTiles[pendingTile].setText(`${number}`);
+  board.children[emptyTiles[randomPlacement]].appendChild(tile);
 }

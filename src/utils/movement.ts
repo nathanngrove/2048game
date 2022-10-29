@@ -1,6 +1,6 @@
-import { shiftTilesRight } from "../movement/moveRight";
-import { shiftTilesLeft } from "../movement/moveLeft";
-import { shiftTilesUp } from "../movement/moveUp"; 
-import { shiftTilesDown } from "../movement/moveDown";
+import { moveTilesRight } from "../movement/rightMovement";
+import { moveTilesDown } from "../movement/downMovement";
+import { moveTilesLeft } from "../movement/leftMovement";
+import { moveTilesUp } from "../movement/upMovement";
 
-export { shiftTilesLeft, shiftTilesRight, shiftTilesUp, shiftTilesDown };
+export { moveTilesRight, moveTilesDown, moveTilesUp, moveTilesLeft };
